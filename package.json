@@ -1,0 +1,20 @@
+{
+  "name": "node_project",
+  "version": "1.0.0",
+  "description": "[this is a link](https://npmjs.org)\r [this is a link](https://npmjs.org)\r [this is a link](https://npmjs.org)",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.4.20"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shovan",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "node_project"
+  }
+}
