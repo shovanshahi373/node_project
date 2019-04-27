@@ -1,26 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const port = 3002;
-
+const connect = require('./database.js');
+const schema = require('./schema.js');
 const app = express();
-
-// const Schema = mongoose.Schema;
-
-// const Student = new Schema({
-//     name: String,
-//     age: Number
-// });
-
-const schema = new mongoose.Schema({
-    studentList: {
-        name: String,
-        age: Number
-    }
-});
-
 const Student = mongoose.model('Student', schema);
 
-// const Blog = mongoose.model('Blog', blogSchema);
 
 app.get('/', (request, response) => {
     response.send('hello world!!!')
@@ -41,13 +26,6 @@ app.post('/students', (request,response) => {
 
 function listner() {
     app.listen(port, () => console.log(`server is running in port ${port}`));
-}
-
-function connect() {
-    mongoose.connect('mongodb://localhost:27017/myapp', {
-        useNewUrlParser: true
-    });
-    return mongoose.connection;
 }
 
 connect()
