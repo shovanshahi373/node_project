@@ -19,10 +19,14 @@ app.get('/students', (request, response) => {
 })
 
 app.post('/students', (request,response) => {
-    student = request.body
-    console.log(request)
-    response.send('created user')
-})
+    student = request.body;
+    Student.create(student,(err,createData)=>{
+        if(err) response.send({err: err.message})
+        response.send(createData);
+    })
+    // console.log(request)
+    // response.send('created user')
+});
 
 function listner() {
     app.listen(port, () => console.log(`server is running in port ${port}`));
