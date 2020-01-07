@@ -1,56 +1,55 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const port = 3002;
+const bodyParser = require("body-parser");
+const express = require("express");
+const path = require("path");
+const pug = require("pug");
+// const mongoose = require('mongoose');
 
+const connect = require("./database.js");
+const Student = require("./student.js");
+
+const port = 3002;
 const app = express();
 
-// const Schema = mongoose.Schema;
+app.use(bodyParser.json());
 
-// const Student = new Schema({
-//     name: String,
-//     age: Number
-// });
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
-const schema = new mongoose.Schema({
-    studentList: {
-        name: String,
-        age: Number
-    }
+app.get("/", (request, response) => {
+  // response.send("hello world!!!");
+  response.render('hello_form');
 });
 
-const Student = mongoose.model('Student', schema);
-
-// const Blog = mongoose.model('Blog', blogSchema);
-
-app.get('/', (request, response) => {
-    response.send('hello world')
+app.get("/students", (request, response) => {
+  Student.find((err, studentList) => {
+    if (err)
+      response.send({
+        error: err.message
+      });
+    response.send(studentList);
+  });
 });
 
-app.get('/students', (request, response) => {
-    Student.find((err, studentList) => {
-        if (err) response.send({ error: err.message })
-        response.send(studentList)
-    })
-})
+app.post("/students", (request, response) => {
+  student = request.body;
+  Student.create(student, (err, createData) => {
+    if (err)
+      response.send({
+        err: err.message
+      });
+    response.send(createData);
+  });
 
-app.post('/students', (request,response) => {
-    student = request.body
-    console.log(request)
-    response.send('created user')
-})
+
+  // console.log(request)
+  // response.send('created user')
+});
 
 function listner() {
-    app.listen(port, () => console.log(`server is running in port ${port}`));
-}
-
-function connect() {
-    mongoose.connect('mongodb://localhost:27017/myapp', {
-        useNewUrlParser: true
-    });
-    return mongoose.connection;
+  app.listen(port, () => console.log(`server is running in port ${port}`));
 }
 
 connect()
-.on('error', (err) => console.log("error occured" + err))
-.once('connected', () => listner())
-.on('disconnected', () => connect())
+  .on("error", err => console.log("error occured" + err))
+  .once("connected", () => listner())
+  .on("disconnected", () => connect());
